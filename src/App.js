@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+
+export default function App() {
+  const [location, setLocation] = useState({});
+
+  useEffect(() => {
+    const watchId = navigator.geolocation.watchPosition(handlePositionReceved)
+
+    return () => navigator.geolocation.clearWatch(watchId)
+  }, []);
+
+  function handlePositionReceved({ coords }) {
+    const { latitude, longitude } = coords;
+
+    setLocation({ latitude, longitude })
+  }
+
+  // const [repositories, setRepositories] = useState([]);
+
+  // useEffect(async () =>  {
+
+    // const response =  await fetch('https://api.github.com/users/diego3g/repos');
+    // const data =  await response.json();
+
+    // setRepositories(data)
+  //}, []);
+
+  // useEffect(() => {
+    // const filtered = repositories.filter(repo => repo.favorite);
+
+    // document.title = `Você tem ${filtered.length} favoritos`;
+  // }, [repositories])
+
+  // function handleFavorite(id) {
+    // const newRepositories = repositories.map(repo => {
+      // return repo.id === id ? { ...repo, favorite: !repo.favorite } : repo
+    // }) ;
+
+    // setRepositories(newRepositories);
+  // }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      Latitude: {location.latitude} <br />
+      Longitude: {location.longitude}
+    </>
+
+
+    // <ul>
+      // { repositories.map(repo => (
+        // <li key={repo.id} >
+          // {repo.name} 
+          // {repo.favorite && <span>(Favorito) </span>}
+          // <button onClick={() => handleFavorite(repo.id)}>Favoritar</button>
+        // </li>
+      // ))}
+    // </ul>
+    
   );
 }
-
-export default App;
